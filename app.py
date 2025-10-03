@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 
 st.set_page_config(page_title="Concrete Mix Calculator", page_icon="🧱")
 
@@ -20,20 +19,11 @@ cement_rate = 320.0
 sand_rate = 60.0
 agg_rate = 50.0
 
-# -------- Private Cost Editor --------
-st.sidebar.title("🔒 Admin Settings (Private)")
-password = st.sidebar.text_input("Enter Password", type="password")
-
-# Use st.secrets for deployment (set in Streamlit Cloud -> Secrets)
-APP_PASSWORD = os.environ.get("APP_PASSWORD", "mypassword")
-
-if password == APP_PASSWORD:
-    st.sidebar.success("✅ Admin Access Granted")
-    cement_rate = st.sidebar.number_input("Cement per bag", value=cement_rate, step=10.0)
-    sand_rate = st.sidebar.number_input("Sand per cft", value=sand_rate, step=1.0)
-    agg_rate = st.sidebar.number_input("Aggregate per cft", value=agg_rate, step=1.0)
-else:
-    st.sidebar.info("Enter password to edit material costs (default rates will be used).")
+# -------- Material Cost Editor (Public) --------
+st.sidebar.title("⚙️ Material Costs")
+cement_rate = st.sidebar.number_input("Cement per bag", value=cement_rate, step=10.0)
+sand_rate = st.sidebar.number_input("Sand per cft", value=sand_rate, step=1.0)
+agg_rate = st.sidebar.number_input("Aggregate per cft", value=agg_rate, step=1.0)
 
 # -------- Public Calculator --------
 grade = st.selectbox("Select Concrete Grade", [15, 20, 25, 30, 35, 40])
@@ -64,5 +54,4 @@ if st.button("🔍 Calculate Mix"):
     st.metric("Cement", f"{cement_bags:.2f} bags", f"Rs. {cement_cost:,.2f}")
     st.metric("Sand", f"{sand_cft:.2f} cft", f"Rs. {sand_cost:,.2f}")
     st.metric("Aggregates", f"{agg_cft:.2f} cft", f"Rs. {agg_cost:,.2f}")
-    st.success(f"👉 **Total Material Cost = Rs. {total_cost:,.2f}**")
-
+    st.success(f"👉 Total Material Cost = Rs. {total_cost:,.2f}")
