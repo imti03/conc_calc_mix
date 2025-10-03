@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 st.set_page_config(page_title="Concrete Mix Calculator", page_icon="🧱")
 
@@ -24,7 +25,7 @@ st.sidebar.title("🔒 Admin Settings (Private)")
 password = st.sidebar.text_input("Enter Password", type="password")
 
 # Use st.secrets for deployment (set in Streamlit Cloud -> Secrets)
-APP_PASSWORD = st.secrets.get("APP_PASSWORD", "mypassword")
+APP_PASSWORD = os.environ.get("APP_PASSWORD", "mypassword")
 
 if password == APP_PASSWORD:
     st.sidebar.success("✅ Admin Access Granted")
@@ -64,3 +65,4 @@ if st.button("🔍 Calculate Mix"):
     st.metric("Sand", f"{sand_cft:.2f} cft", f"Rs. {sand_cost:,.2f}")
     st.metric("Aggregates", f"{agg_cft:.2f} cft", f"Rs. {agg_cost:,.2f}")
     st.success(f"👉 **Total Material Cost = Rs. {total_cost:,.2f}**")
+
